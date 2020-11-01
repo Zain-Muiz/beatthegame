@@ -1,3 +1,46 @@
+<?php
+
+include('../config.php');
+
+if(isset($_POST['myteam']))
+{
+ 
+echo "<script type='text/javascript'>alert('if has keri');</script>";
+$score = 0;
+$email = $_SESSION['alogin'];
+
+
+$sql ="INSERT INTO `myteam` ( `useremail`, `p1`, `p2`, `p3`, `p4`, `p5`, `p6`, `p7`, `p8`, `p9`, `p10`, `p11`, `tscore`) VALUES (:email, :p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:score)";
+$query= $dbh -> prepare($sql);
+$query-> bindParam(':email', $email, PDO::PARAM_STR);
+$query-> bindParam(':p1',myTeam[0].name, PDO::PARAM_STR);
+$query-> bindParam(':p2', myTeam[1].name, PDO::PARAM_STR);
+$query-> bindParam(':p3',myTeam[2].name, PDO::PARAM_STR);
+$query-> bindParam(':p4', myTeam[3].name, PDO::PARAM_STR);
+$query-> bindParam(':p5', myTeam[4].name, PDO::PARAM_STR);
+$query-> bindParam(':p6',myTeam[5].name, PDO::PARAM_STR);
+$query-> bindParam(':p7', myTeam[6].name, PDO::PARAM_STR);
+$query-> bindParam(':p8', myTeam[7].name, PDO::PARAM_STR);
+$query-> bindParam(':p9', myTeam[8].name, PDO::PARAM_STR);
+$query-> bindParam(':p10', myTeam[9].name, PDO::PARAM_STR);
+$query-> bindParam(':p11', myTeam[10].name, PDO::PARAM_STR);
+$query-> bindParam(':score', $score, PDO::PARAM_STR);
+
+$query->execute();
+$lastInsertId = $dbh->lastInsertId();
+if($lastInsertId)
+{
+echo "<script type='text/javascript'>alert('Your entry has updated');</script>";
+echo "<script type='text/javascript'> document.location = '../index/index.php'; </script>";
+}
+else 
+{
+	echo "<script type='text/javascript'>alert('Something went wrong. Please fill and try again');</script>";
+}
+
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -226,7 +269,7 @@
                         <button style = "outline:none; border:none;" class="btn btn-danger block rounded pt-1 pb-1">HOME</button>
                     </div>
 
-                    <div class="col-6 col-md-4 mx-auto"><button  style = "outline:none; border:none;" class="btn btn-success block rounded pt-1 pb-1">PLAY</button> </div>
+                    <div class="col-6 col-md-4 mx-auto"><form method="POST"><button type="submit" onclick="return  confirm('do you want to delete Y/N')" style = "outline:none; border:none;" name= "myteam" class="btn btn-success block rounded pt-1 pb-1">PLAY</form></button> </div>
 
                 </div>
 
@@ -263,6 +306,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
         integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
         crossorigin="anonymous"></script>
+    <script>
+
+    </script>
 
 </body>
 
