@@ -2,32 +2,48 @@
 
 include('../config.php');
 
+ 
+
 if(isset($_POST['myteam']))
 {
- 
+    //$post = file_get_contents('php://input');
+    //$temp = json_decode($post, true);
+   // echo "<script type='text/javascript'>alert('$temp);</script>";
 echo "<script type='text/javascript'>alert('if has keri');</script>";
 $score = 0;
-$email = $_SESSION['alogin'];
+$email =0;
+$p1 = $_POST['p1'];
+$p2 = $_POST['p2'];
+$p3 = $_POST['p3'];
+$p4 = $_POST['p4'];
+$p5 = $_POST['p5'];
+$p6 = $_POST['p6'];
+$p7 = $_POST['p7'];
+$p8 = $_POST['p8'];
+$p9 = $_POST['p9'];
+$p10 = $_POST['p10'];
+$p11 = $_POST['p11'];
 
 
-$sql ="INSERT INTO `myteam` ( `useremail`, `p1`, `p2`, `p3`, `p4`, `p5`, `p6`, `p7`, `p8`, `p9`, `p10`, `p11`, `tscore`) VALUES (:email, :p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:score)";
+$sql ="INSERT INTO `myteam` ( `id`,`useremail`, `p1`, `p2`, `p3`, `p4`, `p5`, `p6`, `p7`, `p8`, `p9`, `p10`, `p11`, `tscore`) VALUES ( NULL ,:email, :p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:score)";
 $query= $dbh -> prepare($sql);
 $query-> bindParam(':email', $email, PDO::PARAM_STR);
-$query-> bindParam(':p1',myTeam[0].name, PDO::PARAM_STR);
-$query-> bindParam(':p2', myTeam[1].name, PDO::PARAM_STR);
-$query-> bindParam(':p3',myTeam[2].name, PDO::PARAM_STR);
-$query-> bindParam(':p4', myTeam[3].name, PDO::PARAM_STR);
-$query-> bindParam(':p5', myTeam[4].name, PDO::PARAM_STR);
-$query-> bindParam(':p6',myTeam[5].name, PDO::PARAM_STR);
-$query-> bindParam(':p7', myTeam[6].name, PDO::PARAM_STR);
-$query-> bindParam(':p8', myTeam[7].name, PDO::PARAM_STR);
-$query-> bindParam(':p9', myTeam[8].name, PDO::PARAM_STR);
-$query-> bindParam(':p10', myTeam[9].name, PDO::PARAM_STR);
-$query-> bindParam(':p11', myTeam[10].name, PDO::PARAM_STR);
-$query-> bindParam(':score', $score, PDO::PARAM_STR);
+$query-> bindParam(':p1',$p1, PDO::PARAM_STR);
+$query-> bindParam(':p2',$p2, PDO::PARAM_STR);
+$query-> bindParam(':p3',$p3, PDO::PARAM_STR);
+$query-> bindParam(':p4', $p4, PDO::PARAM_STR);
+$query-> bindParam(':p5', $p5, PDO::PARAM_STR);
+$query-> bindParam(':p6',$p6, PDO::PARAM_STR);
+$query-> bindParam(':p7', $p7, PDO::PARAM_STR);
+$query-> bindParam(':p8', $p8, PDO::PARAM_STR);
+$query-> bindParam(':p9', $p9, PDO::PARAM_STR);
+$query-> bindParam(':p10', $p10, PDO::PARAM_STR);
+$query-> bindParam(':p11', $p11, PDO::PARAM_STR);
+$query-> bindParam(':score',$score, PDO::PARAM_STR);
 
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
+echo "<script type='text/javascript'>alert('$lastInsertId');</script>";
 if($lastInsertId)
 {
 echo "<script type='text/javascript'>alert('Your entry has updated');</script>";
@@ -39,7 +55,7 @@ else
 }
 
 }
-?>
+?> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -269,9 +285,24 @@ else
                         <button style = "outline:none; border:none;" class="btn btn-danger block rounded pt-1 pb-1">HOME</button>
                     </div>
 
-                    <div class="col-6 col-md-4 mx-auto"><form method="POST"><button type="submit" onclick="return  confirm('do you want to delete Y/N')" style = "outline:none; border:none;" name= "myteam" class="btn btn-success block rounded pt-1 pb-1">PLAY</form></button> </div>
+                    <div class="col-6 col-md-4 mx-auto"><button type="submit" onclick=" saveteam()" style = "outline:none; border:none;" name= "myteam" class="btn btn-success block rounded pt-1 pb-1">PLAY</form></button> </div>
 
                 </div>
+                <div class="hiddenform" style="display: non;">
+                    <form method="POST" id="playform">
+                    <input id="pn1" name="p1" value="">    
+                    <input id="pn2" name="p2" value="">    
+                    <input id="pn3" name="p3" value="">    
+                    <input id="pn4" name="p4" value="">    
+                    <input id="pn5" name="p5" value="">    
+                    <input id="pn6" name="p6" value="">    
+                    <input id="pn7" name="p7" value="">    
+                    <input id="pn8" name="p8" value="">    
+                    <input id="pn9" name="p9" value="">    
+                    <input id="pn10" name="p10" value="">    
+                    <input id="pn11" name="p11" value="">
+                    <input  id="subbt" type="submit" style="display:hidden" name="myteam" class="btn-login">    
+                    </form></div>
 
 
                 <div class="row mx-auto mb-3">
@@ -297,9 +328,11 @@ else
 
 
     <script src="index.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
@@ -308,6 +341,43 @@ else
         crossorigin="anonymous"></script>
     <script>
 
+        function saveteam(){
+            alert(myTeam);
+            document.getElementById('pn1').value= myTeam[0].name;
+            document.getElementById('pn2').value= myTeam[1].name;
+            document.getElementById('pn3').value= myTeam[2].name;
+            document.getElementById('pn4').value= myTeam[3].name;
+            document.getElementById('pn5').value= myTeam[4].name;
+            document.getElementById('pn6').value= myTeam[5].name;
+            document.getElementById('pn7').value= myTeam[6].name;
+            document.getElementById('pn8').value= myTeam[7].name;
+            document.getElementById('pn9').value= myTeam[8].name;
+            document.getElementById('pn10').value= myTeam[9].name;
+            document.getElementById('pn11').value= myTeam[10].name;
+            
+
+        }
+ /* function sendteam(){
+    var a = confirm('do you want to saave Y/N');
+    alert(a);
+    console.log(a);
+    alert(myTeam[0].name);
+    temps()
+    
+ 
+    }*/
+
+    /*function temps(){
+        alert(hi);
+        $.post('myteam.php', JSON.stringify(myTeam),
+       error: function(){
+           alert("Error");
+       }
+       success: function(res){
+           alert(res);
+       }
+   }) 
+    }*/
     </script>
 
 </body>
